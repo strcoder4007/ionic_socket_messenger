@@ -23,11 +23,13 @@ export class ChatRoomPage {
 
     this.getUsers().subscribe(data => {
       let user = data['user'];
+      /*
       if (data['event'] === 'left') {
         this.showToast('User left: ' + user);
       } else {
         this.showToast('User joined: ' + user);
       }
+      */
     });
   }
 
@@ -95,7 +97,17 @@ export class ChatRoomPage {
     confirm.present();
 }
 
+checkPvt() {
+    if(localStorage.getItem("pvt") == "false") {
+        return false;
+    }
+    else if(localStorage.getItem("pvt") == "true") {
+        return true;
+    }
+}
 
-
+falsePvt() {
+    localStorage.setItem("pvt", "false");
+}
 
 }

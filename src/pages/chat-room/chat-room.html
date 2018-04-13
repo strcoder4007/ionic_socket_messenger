@@ -5,7 +5,8 @@
             <ion-title>chat</ion-title>
         </ion-col>
         <ion-col col-1>
-            <ion-icon name="eye-off" (click)="showConfirm()"></ion-icon>
+            <ion-icon *ngIf="!checkPvt()" name="eye-off" (click)="showConfirm()"></ion-icon>
+            <ion-icon *ngIf="checkPvt()" name="eye" (click)="falsePvt()"></ion-icon>
         </ion-col>
     </ion-row>
   </ion-navbar>
