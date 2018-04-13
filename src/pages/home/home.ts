@@ -9,7 +9,11 @@ import { Socket } from 'ng-socket-io';
 export class HomePage {
   nickname = '';
 
-  constructor(public navCtrl: NavController, private socket: Socket) { }
+  constructor(public navCtrl: NavController, private socket: Socket) {
+      if(localStorage.getItem("pvt") == undefined) {
+        localStorage.setItem("pvt", "false");
+      }
+   }
 
   joinChat() {
     this.socket.connect();

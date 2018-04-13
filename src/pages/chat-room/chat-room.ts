@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, NavParams, ToastController } from 'ionic-angular';
+import { NavController, IonicPage, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Socket } from 'ng-socket-io';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,8 +12,9 @@ export class ChatRoomPage {
   messages = [];
   nickname = '';
   message = '';
+  pvt = false;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private socket: Socket, private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, private socket: Socket, private toastCtrl: ToastController, public alertCtrl : AlertController) {
     this.nickname = this.navParams.get('nickname');
 
     this.getMessages().subscribe(message => {
@@ -39,6 +40,12 @@ export class ChatRoomPage {
     let observable = new Observable(observer => {
       this.socket.on('message', (data) => {
         observer.next(data);
+        let junk = localStorage.getItem("pvt");
+        if(junk == "true") {
+            setTimeout(function() {
+                data.pvt = true;
+            }.bind(this), 5000);
+        }
       });
     })
     return observable;
@@ -64,4 +71,31 @@ export class ChatRoomPage {
     });
     toast.present();
   }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+            title: 'Go Private?',
+            message: 'In private mode all messages are deleted after 5 mins.',
+            buttons: [
+                {
+                    text: 'Disagree',
+                    handler: () => {
+                        localStorage.setItem("pvt", "false");                    
+                        console.log('Disagree clicked');
+                    }
+                }, {
+                    text: 'Agree',
+                    handler: () => {
+                        localStorage.setItem("pvt", "true");
+                        console.log('Agree clicked');
+                    }
+                }
+            ]
+        });
+    confirm.present();
+}
+
+
+
+
 }

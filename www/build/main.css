@@ -25200,7 +25200,8 @@ ion-navbar.toolbar {
 }
 
 page-chat-room .user_name {
-  color: #afafaf;
+  color: #fff;
+  font-weight: bold;
 }
 
 page-chat-room .message {
@@ -25213,18 +25214,19 @@ page-chat-room .message {
 
 page-chat-room .my_message {
   background: #488aff !important;
-  color: #000 !important;
+  color: #fff !important;
 }
 
 page-chat-room .other_message {
-  background: #dcdcdc !important;
-  color: #000 !important;
+  background: #488aff !important;
+  color: #fff !important;
 }
 
 page-chat-room .time {
-  color: #afafaf;
+  color: #fff;
   float: right;
   font-size: small;
+  font-weight: bold;
 }
 
 page-chat-room .message_row {
