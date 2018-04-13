@@ -13,6 +13,7 @@ export class ChatRoomPage {
   nickname = '';
   message = '';
   pvt = false;
+  testRadioResult = '0';
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private socket: Socket, private toastCtrl: ToastController, public alertCtrl : AlertController) {
     this.nickname = this.navParams.get('nickname');
@@ -23,19 +24,27 @@ export class ChatRoomPage {
 
     this.getUsers().subscribe(data => {
       let user = data['user'];
-      /*
-      if (data['event'] === 'left') {
-        this.showToast('User left: ' + user);
-      } else {
-        this.showToast('User joined: ' + user);
-      }
-      */
     });
   }
 
-  sendMessage() {
+  myEmitter() {
     this.socket.emit('add-message', { text: this.message });
     this.message = '';
+  }
+
+  sendMessage() {
+      console.log(parseInt(this.testRadioResult)*60*1000);
+      if(this.testRadioResult == '0.017') {
+        setTimeout(() => {
+            this.myEmitter();
+        }, 3000);
+      }
+      else {
+        setTimeout(() => {
+            this.myEmitter();
+          }, parseInt(this.testRadioResult)*60*1000);
+      }
+
   }
 
   getMessages() {
@@ -96,6 +105,54 @@ export class ChatRoomPage {
         });
     confirm.present();
 }
+
+setTime() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Lightsaber color');
+
+
+    alert.addInput({
+        type: 'radio',
+        label: '3 sec',
+        value: '0.017',
+        checked: false
+      });    
+    alert.addInput({
+      type: 'radio',
+      label: '5 mins',
+      value: '5',
+      checked: false
+    });
+    alert.addInput({
+        type: 'radio',
+        label: '10 mins',
+        value: '10',
+        checked: false
+    });
+    alert.addInput({
+        type: 'radio',
+        label: '15 mins',
+        value: '15',
+        checked: false
+    });
+    alert.addInput({
+        type: 'radio',
+        label: '20 mins',
+        value: '20',
+        checked: false
+    });
+
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        //this.testRadioOpen = false;
+        this.testRadioResult = data;
+      }
+    });
+    alert.present();
+  }
 
 checkPvt() {
     if(localStorage.getItem("pvt") == "false") {
