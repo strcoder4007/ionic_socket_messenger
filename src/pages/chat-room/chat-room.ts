@@ -14,6 +14,7 @@ export class ChatRoomPage {
   message = '';
   pvt = false;
   testRadioResult = '0';
+  deltaMsg = '';
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private socket: Socket, private toastCtrl: ToastController, public alertCtrl : AlertController) {
     this.nickname = this.navParams.get('nickname');
@@ -28,18 +29,23 @@ export class ChatRoomPage {
   }
 
   myEmitter() {
-    this.socket.emit('add-message', { text: this.message });
-    this.message = '';
+    this.socket.emit('add-message', { text: this.deltaMsg });
+    this.deltaMsg = '';
+    this.testRadioResult = '0';
   }
 
   sendMessage() {
       console.log(parseInt(this.testRadioResult)*60*1000);
       if(this.testRadioResult == '0.017') {
+          this.deltaMsg = this.message;
+          this.message = '';
         setTimeout(() => {
             this.myEmitter();
         }, 3000);
       }
       else {
+        this.deltaMsg = this.message;
+        this.message = '';
         setTimeout(() => {
             this.myEmitter();
           }, parseInt(this.testRadioResult)*60*1000);

@@ -78,6 +78,7 @@ var ChatRoomPage = (function () {
         this.message = '';
         this.pvt = false;
         this.testRadioResult = '0';
+        this.deltaMsg = '';
         this.nickname = this.navParams.get('nickname');
         this.getMessages().subscribe(function (message) {
             _this.messages.push(message);
@@ -87,18 +88,23 @@ var ChatRoomPage = (function () {
         });
     }
     ChatRoomPage.prototype.myEmitter = function () {
-        this.socket.emit('add-message', { text: this.message });
-        this.message = '';
+        this.socket.emit('add-message', { text: this.deltaMsg });
+        this.deltaMsg = '';
+        this.testRadioResult = '0';
     };
     ChatRoomPage.prototype.sendMessage = function () {
         var _this = this;
         console.log(parseInt(this.testRadioResult) * 60 * 1000);
         if (this.testRadioResult == '0.017') {
+            this.deltaMsg = this.message;
+            this.message = '';
             setTimeout(function () {
                 _this.myEmitter();
             }, 3000);
         }
         else {
+            this.deltaMsg = this.message;
+            this.message = '';
             setTimeout(function () {
                 _this.myEmitter();
             }, parseInt(this.testRadioResult) * 60 * 1000);
